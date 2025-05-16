@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.utils.Configuration;
 
 public class MMIMU {
     BHI260IMU imu;
@@ -19,8 +18,8 @@ public class MMIMU {
                     RevHubOrientationOnRobot.UsbFacingDirection.UP
             )
     );
-    public MMIMU(HardwareMap hardwareMap) {
-        imu = hardwareMap.get(BHI260IMU.class, Configuration.IMU);
+    public MMIMU(HardwareMap hardwareMap, String configurationName) {
+        imu = hardwareMap.get(BHI260IMU.class, configurationName);
         imu.initialize(imuParameters);
     }
 

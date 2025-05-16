@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.seattlesolvers.solverslib.command.Robot;
 
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.MMOpMode;
-import org.firstinspires.ftc.teamcode.utils.OpModeType;
+import org.firstinspires.ftc.teamcode.Libraries.MMLib.Utils.OpModeVeriables.OpModeType;
 
 public class MMRobot extends Robot {
 
@@ -35,7 +35,7 @@ public class MMRobot extends Robot {
      * if experimenting, then this does nothing.
      * @param type the {@link OpModeType} chosen
      */
-    private void initializeSystems(OpModeType type) {
+    public void initializeSystems(OpModeType type) {
         if(type == OpModeType.Competition.TELEOP) {
             initTele();
         } else if (type == OpModeType.Competition.AUTO) {
