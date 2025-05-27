@@ -11,6 +11,7 @@ import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.seattlesolvers.solverslib.command.InstantCommand;
+import com.seattlesolvers.solverslib.command.Robot;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
 
@@ -20,15 +21,13 @@ import org.firstinspires.ftc.teamcode.Libraries.pedroPathing.pedroPathing.consta
 import org.firstinspires.ftc.teamcode.Libraries.pedroPathing.pedroPathing.constants.LConstants;
 import org.firstinspires.ftc.teamcode.MMRobot;
 import org.firstinspires.ftc.teamcode.MMSystems;
+import org.firstinspires.ftc.teamcode.RobotConstants;
 
 @Autonomous
 public class PedroTest extends MMOpMode {
 
     private Follower follower;
     private PathBuilder builder;
-    private final Pose startPose = new Pose(0, 0, Math.toRadians(90));
-    private final Pose basketPose = new Pose(12, 133, Math.toRadians(-45));
-    private final Pose yellowSampleClose = new Pose(40, 130, Math.toRadians(0));
 
     public PedroTest() {
         super(OpModeType.NonCompetition.EXPERIMENTING_NO_EXPANSION);
@@ -36,7 +35,7 @@ public class PedroTest extends MMOpMode {
 
     @Override
     public void onInit() {
-        follower = MMSystems.getInstance().initializeFollower(startPose);
+        follower = MMSystems.getInstance().initializeFollower(RobotConstants.basketStartPose);
         builder = follower.pathBuilder();
     }
 
@@ -49,26 +48,26 @@ public class PedroTest extends MMOpMode {
                 new FollowPathCommand(follower,
                         builder.addPath(
                                 new BezierCurve(
-                                        new Point(startPose),
+                                        new Point(RobotConstants.basketStartPose),
                                         new Point(12, 105),
-                                        new Point(basketPose)
+                                        new Point(RobotConstants.basketPose)
                                 )
                         ).setLinearHeadingInterpolation(
-                                startPose.getHeading(),
-                                basketPose.getHeading()
+                                RobotConstants.basketStartPose.getHeading(),
+                                RobotConstants.basketPose.getHeading()
                         ).build()
                 ),
                 new InstantCommand(),
                 new FollowPathCommand(follower,
                         builder.addPath(
                                 new BezierCurve(
-                                        new Point(basketPose),
+                                        new Point(RobotConstants.basketPose),
                                         new Point(25, 131),
-                                        new Point(yellowSampleClose)
+                                        new Point(RobotConstants.yellowSampleClose)
                                 )
                         ).setLinearHeadingInterpolation(
-                                basketPose.getHeading(),
-                                yellowSampleClose.getHeading()
+                                RobotConstants.basketPose.getHeading(),
+                                RobotConstants.yellowSampleClose.getHeading()
                         ).build()
                 )
         );
