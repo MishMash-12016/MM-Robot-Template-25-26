@@ -17,7 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import Ori.Coval.Logging.AutoLogManager;
-import Ori.Coval.Logging.WpiLog;
+import Ori.Coval.Logging.Logger.KoalaLog;
+
 import org.firstinspires.ftc.teamcode.MMRobot;
 
 
@@ -55,7 +56,7 @@ public abstract class MMOpMode extends LinearOpMode {
     private void robotInit() {
         mmRobot.currentOpMode = this;
         MMRobot.getInstance().initializeSystems(opModeType);
-        WpiLog.setup(hardwareMap);//TODO: maybe move this
+        KoalaLog.setup(hardwareMap);//TODO: maybe move this
     }
 
     public abstract void onInit();

@@ -13,8 +13,7 @@ import java.util.List;
 import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
 
-import Ori.Coval.Logging.WpiLog;
-
+import Ori.Coval.Logging.Logger.KoalaLog;
 public class FFKvSysid extends CommandBase {
     private final double rampRate;       // volts per second (e.g. 0.1)
     private final double kS;             // previously measured static‐friction voltage
@@ -82,7 +81,7 @@ public class FFKvSysid extends CommandBase {
 
         // If we have insufficient data, bail out
         if (velocityData.isEmpty() || voltageMinusKs.isEmpty()) {
-            WpiLog.log("KV SysId: Not enough data points to perform regression.", true, true);
+            KoalaLog.log("KV SysId: Not enough data points to perform regression.", true, true);
             return;
         }
 
@@ -126,7 +125,7 @@ public class FFKvSysid extends CommandBase {
         }
 
 
-        WpiLog.log("KV SysId Results:",
+        KoalaLog.log("KV SysId Results:",
                 String.format("  intercept (need to be close to 0) = %.6f intercept quality = %s," +
                         "kV = %.6f,  " +
                         "R² (need to be very very close to 1) = %.4f R² quality level = %s", intercept, interceptQuality, slope, regression.R2(), r2Quality), true);

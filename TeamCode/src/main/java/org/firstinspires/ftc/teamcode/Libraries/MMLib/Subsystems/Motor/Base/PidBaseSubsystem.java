@@ -15,7 +15,8 @@ import org.firstinspires.ftc.teamcode.MMRobot;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-import Ori.Coval.Logging.WpiLog;
+import Ori.Coval.Logging.Logger.KoalaLog;
+
 
 public class PidBaseSubsystem extends MotorOrCrServoSubsystem {
     // Encoder that measures current position and velocity (ticks converted via ratio)
@@ -36,7 +37,7 @@ public class PidBaseSubsystem extends MotorOrCrServoSubsystem {
     //this command is the base for all the other pid commands
     public Command getToAndHoldSetPointCommand(double setPoint) {
         return new RunCommand(()-> {
-            WpiLog.log(subsystemName + "/ERROR ", "pid holdSetPointCommand is not implemented", true);
+            KoalaLog.log(subsystemName + "/ERROR ", "pid holdSetPointCommand is not implemented", true);
             setPower(0);});
     }
 
@@ -57,7 +58,7 @@ public class PidBaseSubsystem extends MotorOrCrServoSubsystem {
      * @return a Command requiring this subsystem
      */
     public Command getToSetpointCommand(double setPoint) {
-        return getToAndHoldSetPointCommand(setPoint).interruptOn(()->WpiLog.log(subsystemName + "/atSetpoint", pidController.atSetpoint(), true));
+        return getToAndHoldSetPointCommand(setPoint).interruptOn(()->KoalaLog.log(subsystemName + "/atSetpoint", pidController.atSetpoint(), true));
     }
 
     /**
@@ -75,11 +76,11 @@ public class PidBaseSubsystem extends MotorOrCrServoSubsystem {
      * @return current pose in encoder units (divided by ratio)
      */
     public double getPose() {
-        return WpiLog.log(subsystemName + "/pose", encoder.getPose(), true);
+        return KoalaLog.log(subsystemName + "/pose", encoder.getPose(), true);
     }
 
     public double getVelocity() {
-        return WpiLog.log(subsystemName + "/velocity", encoder.getVelocity(), true);
+        return KoalaLog.log(subsystemName + "/velocity", encoder.getVelocity(), true);
     }
 
     public void setPose(double pose) {

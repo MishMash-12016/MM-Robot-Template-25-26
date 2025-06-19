@@ -16,8 +16,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
 
-import Ori.Coval.Logging.WpiLog;
-
+import Ori.Coval.Logging.Logger.KoalaLog;
 /**
  * A subsystem that wraps and manages one or more {@link CuttleServo} instances, allowing
  * for position control and command generation. Supports instant positioning,
@@ -135,7 +134,7 @@ public class ServoSubsystem extends MMSubsystem {
      * @param position the target position [0.0, 1.0]
      */
     public void setPosition(double position) {
-        WpiLog.log(subsystemName + "/position", position, true);
+        KoalaLog.log(subsystemName + "/position", position, true);
         for (CuttleServo servo : servoList) {
             servo.setPosition(position);
         }
@@ -149,7 +148,7 @@ public class ServoSubsystem extends MMSubsystem {
      */
     public double getPosition() {
         double noOffsetPose = servoList.get(0).getPosition() - servoList.get(0).getOffset();
-        return WpiLog.log(subsystemName + "/position",
+        return KoalaLog.log(subsystemName + "/position",
                 servoList.get(0).getDirection() == Direction.REVERSE ? 1 - noOffsetPose : noOffsetPose
                 , true);
     }

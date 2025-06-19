@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.MMRobot;
 import java.util.Set;
 import java.util.function.DoubleSupplier;
 
-import Ori.Coval.Logging.WpiLog;
+import Ori.Coval.Logging.Logger.KoalaLog;
 
 
 public class PositionPidSubsystem extends PidBaseSubsystem {
@@ -34,12 +34,12 @@ public class PositionPidSubsystem extends PidBaseSubsystem {
                 pidController.reset();
                 pidController.setSetpoint(setPoint);
 
-                WpiLog.log(subsystemName + "/pid setpoint", setPoint, true);
+                KoalaLog.log(subsystemName + "/pid setpoint", setPoint, true);
             }
 
             @Override
             public void execute() {
-                double pidOutput = WpiLog.log(subsystemName + "/pid output", pidController.calculate(getPose()), true);
+                double pidOutput = KoalaLog.log(subsystemName + "/pid output", pidController.calculate(getPose()), true);
                 setPower(pidOutput);// apply computed power
             }
 

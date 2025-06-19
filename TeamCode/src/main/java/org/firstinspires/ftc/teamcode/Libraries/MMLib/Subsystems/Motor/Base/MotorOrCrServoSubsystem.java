@@ -14,7 +14,8 @@ import org.firstinspires.ftc.teamcode.Libraries.MMLib.Utils.MMMotorOrCrServo;
 import org.firstinspires.ftc.teamcode.MMRobot;
 import java.util.ArrayList;
 
-import Ori.Coval.Logging.WpiLog;
+import Ori.Coval.Logging.Logger.KoalaLog;
+
 
 public class MotorOrCrServoSubsystem extends MMSubsystem {
     // List of motors or crServos driven by this subsystem
@@ -68,7 +69,7 @@ public class MotorOrCrServoSubsystem extends MMSubsystem {
      * is installed, as this method does not manage command requirements.</p>
      */
     public void setPower(double power) {
-        WpiLog.log(subsystemName + "/power: ", power, true);
+        KoalaLog.log(subsystemName + "/power: ", power, true);
 
         for (MMMotorOrCrServo motor : motorOrCrServoList) {
             motor.setPower(power);

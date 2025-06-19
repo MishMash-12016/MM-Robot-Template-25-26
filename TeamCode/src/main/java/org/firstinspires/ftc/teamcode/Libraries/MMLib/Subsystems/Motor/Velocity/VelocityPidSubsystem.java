@@ -13,8 +13,7 @@ import org.firstinspires.ftc.teamcode.MMRobot;
 import java.util.Set;
 import java.util.function.DoubleSupplier;
 
-import Ori.Coval.Logging.WpiLog;
-
+import Ori.Coval.Logging.Logger.KoalaLog;
 /**
  * MotorVelocityPidSubsystem provides PID-controlled velocity for a motor-driven mechanism.
  *
@@ -51,19 +50,19 @@ public class VelocityPidSubsystem extends PidBaseSubsystem {
                 pidController.reset();
                 pidController.setSetpoint(setPoint);
 
-                WpiLog.log(subsystemName + "/pid setpoint", setPoint, true);
+                KoalaLog.log(subsystemName + "/pid setpoint", setPoint, true);
             }
 
             @Override
             public void execute() {
-                double pidOutput = WpiLog.log(subsystemName + "/pid output", pidController.calculate(getVelocity()), true);
+                double pidOutput = KoalaLog.log(subsystemName + "/pid output", pidController.calculate(getVelocity()), true);
                 double feedforwardOutput = 0;
 
 
                 if (feedforward != null) {
                     feedforwardOutput = feedforward.calculate(pidController.getSetpoint());
                 }
-                WpiLog.log(subsystemName + "/pid feedforward", feedforwardOutput, true);
+                KoalaLog.log(subsystemName + "/pid feedforward", feedforwardOutput, true);
 
                 setPower(pidOutput + feedforwardOutput);// apply computed power
             }

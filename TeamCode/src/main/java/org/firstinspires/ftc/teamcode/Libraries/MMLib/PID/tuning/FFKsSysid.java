@@ -14,8 +14,7 @@ import com.seattlesolvers.solverslib.command.Subsystem;
 import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
 
-import Ori.Coval.Logging.WpiLog;
-
+import Ori.Coval.Logging.Logger.KoalaLog;
 public class FFKsSysid extends CommandBase {
     private final Double currentRampFactor;
     private final Double minVelocity;
@@ -57,7 +56,7 @@ public class FFKsSysid extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        WpiLog.log("Static Characterization output: ", currentInput, true);
+        KoalaLog.log("Static Characterization output: ", currentInput, true);
         inputConsumer.accept(0);
     }
 }
