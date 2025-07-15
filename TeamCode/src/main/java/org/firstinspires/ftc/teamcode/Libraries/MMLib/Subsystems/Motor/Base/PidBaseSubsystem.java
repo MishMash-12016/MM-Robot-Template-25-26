@@ -35,10 +35,10 @@ public class PidBaseSubsystem extends MotorOrCrServoSubsystem {
      * @return a Command requiring this subsystem
      */
     //this command is the base for all the other pid commands
-    public Command getToAndHoldSetPointCommand(double setPoint) {
+    public Command getToAndHoldSetPointCommand(DoubleSupplier setPoint) {
         return new RunCommand(()-> {
             KoalaLog.log(subsystemName + "/ERROR ", "pid holdSetPointCommand is not implemented", true);
-            setPower(0);});
+            setPower(0);}, this);
     }
 
     /**
@@ -46,9 +46,8 @@ public class PidBaseSubsystem extends MotorOrCrServoSubsystem {
      *
      * @return a Command requiring this subsystem
      */
-    public Command getToAndHoldSetPointCommand(DoubleSupplier setPoint) {
-        return getToAndHoldSetPointCommand(setPoint.getAsDouble())
-                .alongWith(new RunCommand(()-> pidController.setSetpoint(setPoint.getAsDouble())));
+    public Command getToAndHoldSetPointCommand(double setPoint) {
+        return getToAndHoldSetPointCommand(()->setPoint);
     }
 
     /**
@@ -58,7 +57,7 @@ public class PidBaseSubsystem extends MotorOrCrServoSubsystem {
      * @return a Command requiring this subsystem
      */
     public Command getToSetpointCommand(double setPoint) {
-        return getToAndHoldSetPointCommand(setPoint).interruptOn(()->KoalaLog.log(subsystemName + "/atSetpoint", pidController.atSetpoint(), true));
+        return getToAndHoldSetPointCommand(()->setPoint).interruptOn(()->KoalaLog.log(subsystemName + "/atSetpoint", pidController.atSetpoint(), true));
     }
 
     /**
@@ -67,7 +66,7 @@ public class PidBaseSubsystem extends MotorOrCrServoSubsystem {
      * @return a Command requiring this subsystem
      */
     public Command holdCurrentSetPointCommand() {
-        return getToAndHoldSetPointCommand(pidController.getSetpoint());
+        return getToAndHoldSetPointCommand(()->pidController.getSetpoint());
     }
 
     /**

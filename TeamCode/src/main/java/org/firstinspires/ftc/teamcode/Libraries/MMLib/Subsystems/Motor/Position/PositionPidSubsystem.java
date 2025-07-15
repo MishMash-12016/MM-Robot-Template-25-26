@@ -26,19 +26,22 @@ public class PositionPidSubsystem extends PidBaseSubsystem {
      * @return a Command requiring this subsystem
      */
     @Override
-    public Command getToAndHoldSetPointCommand(double setPoint) {
+    public Command getToAndHoldSetPointCommand(DoubleSupplier setPoint) {
         return new Command() {
             @Override
             public void initialize() {
                 // clear previous errors/integral
                 pidController.reset();
-                pidController.setSetpoint(setPoint);
+                pidController.setSetpoint(setPoint.getAsDouble());
 
-                KoalaLog.log(subsystemName + "/pid setpoint", setPoint, true);
+                KoalaLog.log(subsystemName + "/pid setpoint", setPoint.getAsDouble(), true);
             }
 
             @Override
             public void execute() {
+                pidController.setSetpoint(setPoint.getAsDouble());
+                KoalaLog.log(subsystemName + "/pid setpoint", pidController.getSetpoint(), true);
+
                 double pidOutput = KoalaLog.log(subsystemName + "/pid output", pidController.calculate(getPose()), true);
                 setPower(pidOutput);// apply computed power
             }

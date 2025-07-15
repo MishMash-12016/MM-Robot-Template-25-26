@@ -23,7 +23,11 @@ public class MotorOrCrServoSubsystem extends MMSubsystem {
     public final String subsystemName;
     public ZeroPowerBehavior zeroPowerBehavior;
 
+    public double maxPower = 1.0;
+    public double minPower = -1.0;
+
     public MotorOrCrServoSubsystem(String subsystemName){
+        super();
         this.subsystemName = subsystemName;
         MMRobot.getInstance().subsystems.add(this);
     }
@@ -35,7 +39,7 @@ public class MotorOrCrServoSubsystem extends MMSubsystem {
      * @return a RunCommand requiring this subsystem
      */
     public Command setPowerRunCommand(double power) {
-        return new RunCommand(() -> setPower(power), this);
+        return new RunCommand(() -> setPower(power), this).whenFinished(this::stop);
     }
 
     /**
@@ -71,6 +75,12 @@ public class MotorOrCrServoSubsystem extends MMSubsystem {
     public void setPower(double power) {
         KoalaLog.log(subsystemName + "/power: ", power, true);
 
+        if (power > maxPower) {
+            power = maxPower;
+        } else if (power < minPower) {
+            power = minPower;
+        }
+
         for (MMMotorOrCrServo motor : motorOrCrServoList) {
             motor.setPower(power);
         }
@@ -104,6 +114,10 @@ public class MotorOrCrServoSubsystem extends MMSubsystem {
         return this;
     }
 
+    public double getPower(){
+        return motorOrCrServoList.get(0).getPower();
+    }
+
     public MotorOrCrServoSubsystem withZeroPowerBehavior(ZeroPowerBehavior zeroPowerBehavior){
         for (MMMotorOrCrServo motor: motorOrCrServoList){
             motor.setZeroPowerBehavior(zeroPowerBehavior);
@@ -115,6 +129,21 @@ public class MotorOrCrServoSubsystem extends MMSubsystem {
     public MotorOrCrServoSubsystem withSetDefaultCommand(Command defaultCommand){
         setDefaultCommand(defaultCommand);
         return this;
+    }
+
+    public double withMaxPower(double maxPower){
+        this.maxPower = maxPower;
+        return maxPower;
+    }
+
+    public double withMinPower(double minPower){
+        this.minPower = minPower;
+        return minPower;
+    }
+
+    public void withMaxPowerAndMinPower(double maxPower, double minPower){
+        this.maxPower = maxPower;
+        this.minPower = minPower;
     }
 
     @Override

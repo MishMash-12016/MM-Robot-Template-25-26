@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Libraries.CuttlefishFTCBridge.src.utils.Direction;
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.Utils.MMUtils;
-import org.firstinspires.ftc.teamcode.MMRobot;
 
 
 /**
@@ -68,7 +67,7 @@ public class CuttleMotor {
      */
     private double voltageCompensate(double uncompensatedPower) {
         // 1) Read the raw battery voltage once per loop
-        double rawVoltage = hub.getBatteryVoltage();
+        double rawVoltage = hub.getBatteryVoltage() / 1000.0;
 
         // 2) Initialize filteredVoltage on first call (if still 0.0).
         //    You could also set filteredVoltage = hub.getBatteryVoltage() in init().

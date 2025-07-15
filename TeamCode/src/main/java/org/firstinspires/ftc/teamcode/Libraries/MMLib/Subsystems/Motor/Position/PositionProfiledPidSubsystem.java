@@ -30,20 +30,23 @@ public class PositionProfiledPidSubsystem extends PidBaseSubsystem {
      * @return a Command requiring this subsystem
      */
     @Override
-    public Command getToAndHoldSetPointCommand(double setPoint) {
+    public Command getToAndHoldSetPointCommand(DoubleSupplier setPoint) {
         return new Command() {
             @Override
             public void initialize() {
                 // clear previous errors/integral
                 ((ProfiledPIDController) pidController).reset(getPose(), getVelocity());
-                pidController.setSetpoint(setPoint);
+                pidController.setSetpoint(setPoint.getAsDouble());
 
-                KoalaLog.log(subsystemName + "/pid setpoint", setPoint, true);
+                KoalaLog.log(subsystemName + "/pid setpoint", setPoint.getAsDouble(), true);
             }
 
             @Override
             public void execute() {
-                KoalaLog.log(subsystemName + "/pid setpoint", setPoint, true);
+                pidController.setSetpoint(setPoint.getAsDouble());
+
+                KoalaLog.log(subsystemName + "/pid setpoint", setPoint.getAsDouble(), true);
+                
                 double pidOutput = KoalaLog.log(subsystemName + "/pid output", pidController.calculate(getPose()), true);
                 double feedforwardOutput = 0;
 

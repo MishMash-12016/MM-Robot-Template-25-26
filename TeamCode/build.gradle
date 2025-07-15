@@ -69,8 +69,8 @@ dependencies {
     implementation "com.acmerobotics.dashboard:dashboard:0.4.16" // FTC Dashboard
 
     //Logging
-    implementation 'com.github.ori-coval.Koala-Log:KoalaLogger:1.0.0'
-    annotationProcessor 'com.github.ori-coval.Koala-Log:KoalaLoggingProcessor:1.0.0'
+    implementation 'com.github.ori-coval.Koala-Log:KoalaLogger:1.2.3Beta'
+    annotationProcessor 'com.github.ori-coval.Koala-Log:KoalaLoggingProcessor:1.2.3Beta'
 
     implementation 'org.team11260:fast-load:0.1.2'
 }
