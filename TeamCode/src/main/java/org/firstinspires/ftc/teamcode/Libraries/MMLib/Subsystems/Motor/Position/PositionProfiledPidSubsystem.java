@@ -45,7 +45,7 @@ public class PositionProfiledPidSubsystem extends ProfiledPidBase {
 
                 double feedforwardOutput = KoalaLog.log(
                         subsystemName + "/feedforward output",
-                        feedforward.calculate(profiledPIDController.getStateSetpoint().velocity),
+                        feedforward.calculate(profiledPIDController.getSetpoint().velocity),
                         true);//TODO: check whether to divide here by batteryVoltage
 
                 setPower(pidOutput + feedforwardOutput);// apply computed power
@@ -84,7 +84,7 @@ public class PositionProfiledPidSubsystem extends ProfiledPidBase {
      * @return a Command requiring this subsystem
      */
     public Command holdCurrentSetPointCommand() {
-        return getToAndHoldSetPointCommand(()-> profiledPIDController.getSetpoint());
+        return getToAndHoldSetPointCommand(()-> profiledPIDController.getGoal().position);
     }
 
     public Command tuneKSCommand(double rampRate, double minVelocity){
