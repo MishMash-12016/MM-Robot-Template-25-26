@@ -408,8 +408,6 @@ public class CuttleRevHub extends LynxCommExceptionHandler implements RobotArmin
    public void pullBulkData() {
       LynxGetBulkInputDataCommand cmd = new LynxGetBulkInputDataCommand(revHub);
 
-      // TODO revHub.sendCommand(cmd);
-
       bulkData.updateData((LynxGetBulkInputDataResponse) sendCommandReceiveSync(cmd));
    }
 

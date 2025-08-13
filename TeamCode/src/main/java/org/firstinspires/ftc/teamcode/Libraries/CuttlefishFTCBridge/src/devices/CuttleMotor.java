@@ -18,8 +18,6 @@ public class CuttleMotor {
     int sign = 1;
     double power;
     public boolean interlaced;
-
-    //TODO: find nominal voltag
     double nominalVoltage = 12;
 
     /**

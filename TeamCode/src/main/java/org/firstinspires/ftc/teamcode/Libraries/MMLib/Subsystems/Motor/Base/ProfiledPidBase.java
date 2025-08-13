@@ -12,7 +12,6 @@ import org.firstinspires.ftc.teamcode.Libraries.MMLib.PID.FeedForwards.ArmFeedfo
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.PID.FeedForwards.ElevatorFeedforward;
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.PID.FeedForwards.FeedForwardType;
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.PID.FeedForwards.SimpleMotorFeedforward;
-
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.Utils.MMUtils;
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.Utils.OpModeVeriables.OpModeType;
 import org.firstinspires.ftc.teamcode.MMRobot;
@@ -31,7 +30,7 @@ public class ProfiledPidBase extends MotorOrCrServoSubsystem {
     // Encoder that measures current position and velocity (ticks converted via ratio)
     private CuttleEncoder encoder;
     public ProfiledPIDController profiledPIDController = new ProfiledPIDController(0, 0, 0, new TrapezoidProfile.Constraints(0,0));
-    public SimpleMotorFeedforward feedforward;//TODO:  make other feedforwards usable
+    public SimpleMotorFeedforward feedforward;
 
     //base
     public ProfiledPidBase(String subsystemName) {

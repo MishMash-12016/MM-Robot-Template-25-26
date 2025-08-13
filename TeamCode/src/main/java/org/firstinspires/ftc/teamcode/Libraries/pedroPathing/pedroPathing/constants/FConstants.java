@@ -6,7 +6,6 @@ import com.pedropathing.util.CustomFilteredPIDFCoefficients;
 import com.pedropathing.util.CustomPIDFCoefficients;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-//TODO: turn pedro to fully be command base
 public class FConstants {
     static {
         FollowerConstants.localizers = Localizers.THREE_WHEEL;

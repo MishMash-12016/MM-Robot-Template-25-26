@@ -8,7 +8,6 @@ import org.firstinspires.ftc.teamcode.Libraries.MMLib.Utils.MMUtils;
 
 /** Implements a PID control loop. */
 public class PIDController implements AutoCloseable {
-    private static int instances;
 
     // Factor for "proportional" control
     private double m_kp;
@@ -102,8 +101,6 @@ public class PIDController implements AutoCloseable {
             throw new IllegalArgumentException("Controller period must be a positive number!");
         }
         m_period = period;
-
-        instances++;
     }
 
     @Override

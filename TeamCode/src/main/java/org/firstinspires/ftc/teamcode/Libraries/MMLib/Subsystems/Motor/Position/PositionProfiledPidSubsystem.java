@@ -49,7 +49,7 @@ public class PositionProfiledPidSubsystem extends ProfiledPidBase {
                 double feedforwardOutput = KoalaLog.log(
                         subsystemName + "/feedforward output",
                         feedforward.calculate(profiledPIDController.getSetpoint().velocity),
-                        true);//TODO: check whether to divide here by batteryVoltage
+                        true);
 
                 setPower(pidOutput + feedforwardOutput);// apply computed power
             }

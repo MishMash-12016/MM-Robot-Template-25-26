@@ -7,10 +7,10 @@ import com.seattlesolvers.solverslib.command.Command;
 import com.seattlesolvers.solverslib.command.CommandScheduler;
 import com.seattlesolvers.solverslib.command.InstantCommand;
 
-
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.Utils.OpModeVeriables.AllianceColor;
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.Utils.OpModeVeriables.AllianceSide;
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.Utils.OpModeVeriables.OpModeType;
+import org.firstinspires.ftc.teamcode.MMRobot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,8 +18,6 @@ import java.util.List;
 
 import Ori.Coval.Logging.AutoLogManager;
 import Ori.Coval.Logging.Logger.KoalaLog;
-
-import org.firstinspires.ftc.teamcode.MMRobot;
 
 
 /**
@@ -54,7 +52,7 @@ public abstract class MMOpMode extends LinearOpMode {
     private void robotInit() {
         MMRobot.getInstance().currentOpMode = this;
         MMRobot.getInstance().initializeSystems(opModeType);
-        KoalaLog.setup(hardwareMap);//TODO: maybe move this
+        KoalaLog.setup(hardwareMap);
     }
 
     public abstract void onInit();
