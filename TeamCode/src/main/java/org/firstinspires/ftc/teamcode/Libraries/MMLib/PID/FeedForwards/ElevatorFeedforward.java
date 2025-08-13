@@ -53,10 +53,12 @@ public class ElevatorFeedforward extends SimpleMotorFeedforward{
         return ks * Math.signum(velocity) + kg + kv * velocity + ka * acceleration;
     }
 
+    @Override
     public double getKg() {
         return kg;
     }
 
+    @Override
     public void setKg(double kg) {
         this.kg = kg;
     }

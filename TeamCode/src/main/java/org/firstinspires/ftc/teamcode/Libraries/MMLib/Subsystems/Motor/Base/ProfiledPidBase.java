@@ -8,6 +8,9 @@ import org.firstinspires.ftc.teamcode.Libraries.CuttlefishFTCBridge.src.devices.
 import org.firstinspires.ftc.teamcode.Libraries.CuttlefishFTCBridge.src.devices.CuttleEncoder;
 import org.firstinspires.ftc.teamcode.Libraries.CuttlefishFTCBridge.src.devices.CuttleRevHub;
 import org.firstinspires.ftc.teamcode.Libraries.CuttlefishFTCBridge.src.utils.Direction;
+import org.firstinspires.ftc.teamcode.Libraries.MMLib.PID.FeedForwards.ArmFeedforward;
+import org.firstinspires.ftc.teamcode.Libraries.MMLib.PID.FeedForwards.ElevatorFeedforward;
+import org.firstinspires.ftc.teamcode.Libraries.MMLib.PID.FeedForwards.FeedForwardType;
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.PID.FeedForwards.SimpleMotorFeedforward;
 
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.Utils.MMUtils;
@@ -127,11 +130,18 @@ public class ProfiledPidBase extends MotorOrCrServoSubsystem {
      * Updates feedforward gains.
      *
      * @param ks static gain
+     * @param Kg the gravity gain leave empty for simple feedforward
      * @param kv velocity gain
      * @param ka acceleration gain
      */
-    public ProfiledPidBase withFeedforward(double ks, double kv, double ka) {
-        feedforward = new SimpleMotorFeedforward(ks, kv, ka);
+    public ProfiledPidBase withFeedforward(FeedForwardType feedForwardType, double ks, double Kg, double kv, double ka) {
+        if(feedForwardType == FeedForwardType.SIMPLE){
+            feedforward = new SimpleMotorFeedforward(ks, kv, ka);
+        } else if (feedForwardType == FeedForwardType.ELEVATOR) {
+            feedforward = new ElevatorFeedforward(ks, Kg, kv, ka);
+        }else if (feedForwardType == FeedForwardType.ARM) {
+            feedforward = new ArmFeedforward(ks, Kg, kv, ka);
+        }
         return this;
     }
 
@@ -164,6 +174,17 @@ public class ProfiledPidBase extends MotorOrCrServoSubsystem {
         feedforward.setKa(ka);
         return this;
     }
+
+    /**
+     * Updates feedforward gain.
+     *
+     * @param kg gravity gain
+     */
+    public ProfiledPidBase withKg(double kg) {
+        feedforward.setKg(kg);
+        return this;
+    }
+
 
     /**
      * updates the constraints values
@@ -228,15 +249,13 @@ public class ProfiledPidBase extends MotorOrCrServoSubsystem {
         setPose(pose);
     }
 
+
     private DoubleSupplier debugKpSupplier;
     private DoubleSupplier debugKiSupplier;
     private DoubleSupplier debugKdSupplier;
-    private DoubleSupplier debugIZoneSupplier;
     private DoubleSupplier debugPositionToleranceSupplier;
-    private DoubleSupplier debugVelocityToleranceSupplier;
-    private DoubleSupplier debugIntegralMinRangeSupplier;
-    private DoubleSupplier debugIntegralMaxRangeSupplier;
     private DoubleSupplier debugKsSupplier;
+    private DoubleSupplier debugKgSupplier;
     private DoubleSupplier debugKvSupplier;
     private DoubleSupplier debugKaSupplier;
     private DoubleSupplier debugMaxVelocitySupplier;
@@ -249,12 +268,9 @@ public class ProfiledPidBase extends MotorOrCrServoSubsystem {
      * @param debugKpSupplier                  Kp
      * @param debugKiSupplier                  Kd
      * @param debugKdSupplier                  Ki
-     * @param debugIZoneSupplier               iZone
      * @param debugPositionToleranceSupplier position tolerance
-     * @param debugVelocityToleranceSupplier velocity tolerance
-     * @param debugIntegralMinRangeSupplier    integral min range
-     * @param debugIntegralMaxRangeSupplier    integral max range
      * @param debugKsSupplier                  static gain
+     * @param debugKgSupplier                  gravity gain
      * @param debugKvSupplier                  velocity gain
      * @param debugKaSupplier                  acceleration gain
      * @param debugMaxVelocitySupplier         max velocity
@@ -264,12 +280,9 @@ public class ProfiledPidBase extends MotorOrCrServoSubsystem {
     public ProfiledPidBase withDebugPidSuppliers(DoubleSupplier debugKpSupplier,
                                                  DoubleSupplier debugKiSupplier,
                                                  DoubleSupplier debugKdSupplier,
-                                                 DoubleSupplier debugIZoneSupplier,
                                                  DoubleSupplier debugPositionToleranceSupplier,
-                                                 DoubleSupplier debugVelocityToleranceSupplier,
-                                                 DoubleSupplier debugIntegralMinRangeSupplier,
-                                                 DoubleSupplier debugIntegralMaxRangeSupplier,
                                                  DoubleSupplier debugKsSupplier,
+                                                 DoubleSupplier debugKgSupplier,
                                                  DoubleSupplier debugKvSupplier,
                                                  DoubleSupplier debugKaSupplier,
                                                  DoubleSupplier debugMaxVelocitySupplier,
@@ -278,12 +291,9 @@ public class ProfiledPidBase extends MotorOrCrServoSubsystem {
         this.debugKpSupplier = debugKpSupplier;
         this.debugKiSupplier = debugKiSupplier;
         this.debugKdSupplier = debugKdSupplier;
-        this.debugIZoneSupplier = debugIZoneSupplier;
         this.debugPositionToleranceSupplier = debugPositionToleranceSupplier;
-        this.debugVelocityToleranceSupplier = debugVelocityToleranceSupplier;
-        this.debugIntegralMinRangeSupplier = debugIntegralMinRangeSupplier;
-        this.debugIntegralMaxRangeSupplier = debugIntegralMaxRangeSupplier;
         this.debugKsSupplier = debugKsSupplier;
+        this.debugKgSupplier = debugKgSupplier;
         this.debugKvSupplier = debugKvSupplier;
         this.debugKaSupplier = debugKaSupplier;
         this.debugMaxVelocitySupplier = debugMaxVelocitySupplier;
@@ -323,6 +333,12 @@ public class ProfiledPidBase extends MotorOrCrServoSubsystem {
                     debugKsSupplier,
                     feedforward::getKs,
                     feedforward::setKs
+            );
+
+            MMUtils.updateIfChanged(
+                    debugKsSupplier,
+                    feedforward::getKg,
+                    feedforward::setKg
             );
 
             MMUtils.updateIfChanged(

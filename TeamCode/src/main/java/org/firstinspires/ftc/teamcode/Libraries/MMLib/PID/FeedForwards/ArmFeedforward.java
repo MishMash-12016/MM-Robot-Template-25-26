@@ -11,7 +11,7 @@ package org.firstinspires.ftc.teamcode.Libraries.MMLib.PID.FeedForwards;
 public class ArmFeedforward extends SimpleMotorFeedforward{
 
     /** The gravity gain, in volts. */
-    public final double kg;
+    public double kg;
 
     /**
      * Creates a new ArmFeedforward with the specified gains. Units of the gain values will dictate
@@ -71,5 +71,15 @@ public class ArmFeedforward extends SimpleMotorFeedforward{
      */
     public double calculate(double positionRadians, double velocity) {
         return calculate(positionRadians, velocity, 0);
+    }
+
+    @Override
+    public double getKg() {
+        return kg;
+    }
+
+    @Override
+    public void setKg(double kg) {
+        this.kg = kg;
     }
 }

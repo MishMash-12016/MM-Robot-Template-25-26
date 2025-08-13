@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Libraries.MMLib.Subsystems.Motor.Position;
 
 import com.seattlesolvers.solverslib.command.Command;
-import com.seattlesolvers.solverslib.command.RunCommand;
 import com.seattlesolvers.solverslib.command.Subsystem;
 
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.PID.tuning.FFKsSysid;
@@ -41,6 +40,10 @@ public class PositionProfiledPidSubsystem extends ProfiledPidBase {
                 double pidOutput = KoalaLog.log(
                         subsystemName + "/pid output",
                         profiledPIDController.calculate(getPose(), setPoint.getAsDouble()),
+                        true);
+
+                KoalaLog.log(subsystemName + "/target velocity",
+                        profiledPIDController.getSetpoint().velocity,
                         true);
 
                 double feedforwardOutput = KoalaLog.log(
