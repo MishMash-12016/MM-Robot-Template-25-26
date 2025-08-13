@@ -16,6 +16,9 @@ import org.firstinspires.ftc.teamcode.MMRobot;
 import java.util.ArrayList;
 
 import Ori.Coval.Logging.AutoLogOutput;
+import edu.wpi.first.units.Unit;
+import edu.wpi.first.units.VoltageUnit;
+import edu.wpi.first.units.measure.Voltage;
 
 
 public class MotorOrCrServoSubsystem extends MMSubsystem {
@@ -83,6 +86,10 @@ public class MotorOrCrServoSubsystem extends MMSubsystem {
         for (MMMotorOrCrServo motor : motorOrCrServoList) {
             motor.setPower(power);
         }
+    }
+
+    public void setPower(Voltage voltage){
+        setPower(voltage.magnitude());
     }
 
     public void stop(){
