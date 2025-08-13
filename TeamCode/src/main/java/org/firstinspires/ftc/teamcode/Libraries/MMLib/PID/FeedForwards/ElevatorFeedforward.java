@@ -11,7 +11,7 @@ package org.firstinspires.ftc.teamcode.Libraries.MMLib.PID.FeedForwards;
 public class ElevatorFeedforward extends SimpleMotorFeedforward{
 
     /** The gravity gain. */
-    public final double kg;
+    public double kg;
 
     /**
      * Creates a new ElevatorFeedforward with the specified gains. Units of the gain values will
@@ -51,5 +51,13 @@ public class ElevatorFeedforward extends SimpleMotorFeedforward{
     @Override
     public double calculate(double velocity, double acceleration) {
         return ks * Math.signum(velocity) + kg + kv * velocity + ka * acceleration;
+    }
+
+    public double getKg() {
+        return kg;
+    }
+
+    public void setKg(double kg) {
+        this.kg = kg;
     }
 }
