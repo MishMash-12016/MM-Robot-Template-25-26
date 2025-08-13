@@ -55,7 +55,7 @@ public class CuttleEncoder
     }
 
     public void setPose(double pose){
-        offsetTicks += getCounts() - pose;
+        offsetTicks -= getCounts() - pose;
     }
 
     /**

@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Libraries.MMLib.Subsystems.Motor.Position;
 
 import com.seattlesolvers.solverslib.command.Command;
-import com.seattlesolvers.solverslib.command.RunCommand;
 import com.seattlesolvers.solverslib.command.Subsystem;
 
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.PID.tuning.FFKsSysid;
@@ -43,9 +42,13 @@ public class PositionProfiledPidSubsystem extends ProfiledPidBase {
                         profiledPIDController.calculate(getPose(), setPoint.getAsDouble()),
                         true);
 
+                KoalaLog.log(subsystemName + "/target velocity",
+                        profiledPIDController.getSetpoint().velocity,
+                        true);
+
                 double feedforwardOutput = KoalaLog.log(
                         subsystemName + "/feedforward output",
-                        feedforward.calculate(profiledPIDController.getStateSetpoint().velocity),
+                        feedforward.calculate(profiledPIDController.getSetpoint().velocity),
                         true);//TODO: check whether to divide here by batteryVoltage
 
                 setPower(pidOutput + feedforwardOutput);// apply computed power
@@ -84,7 +87,7 @@ public class PositionProfiledPidSubsystem extends ProfiledPidBase {
      * @return a Command requiring this subsystem
      */
     public Command holdCurrentSetPointCommand() {
-        return getToAndHoldSetPointCommand(()-> profiledPIDController.getSetpoint());
+        return getToAndHoldSetPointCommand(()-> profiledPIDController.getGoal().position);
     }
 
     public Command tuneKSCommand(double rampRate, double minVelocity){
