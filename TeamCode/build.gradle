@@ -48,9 +48,7 @@ repositories {
     maven {
         url "https://repo.dairy.foundation/releases"
     }
-    maven {
-        url "https://repo.dairy.foundation/snapshots"
-    }
+
     maven {
         url = 'https://www.matthewo.tech/maven/'
     }
@@ -61,12 +59,16 @@ dependencies {
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
 
     // SolversLib
-    implementation "org.solverslib:core:0.2.7" // core
-    implementation "org.solverslib:pedroPathing:0.2.5" // pedroPathing
+    implementation "org.solverslib:core:0.3.1" // core
+    implementation "org.solverslib:pedroPathing:0.3.1" // pedroPathing
 
     // Pedro Pathing
     implementation "com.pedropathing:pedro:1.0.9" // Pedro Pathing Library
     implementation "com.acmerobotics.dashboard:dashboard:0.4.16" // FTC Dashboard
+    //noinspection GradleDependency
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7'
+    //noinspection GradleDependency
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.4.21'
 
     //Logging
     implementation 'com.github.ori-coval.Koala-Log:KoalaLogger:1.4.0'
