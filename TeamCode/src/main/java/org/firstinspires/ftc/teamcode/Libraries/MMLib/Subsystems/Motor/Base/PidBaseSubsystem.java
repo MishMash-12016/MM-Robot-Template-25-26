@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Libraries.MMLib.Subsystems.Motor.Base;
 
 import com.seattlesolvers.solverslib.command.Command;
+import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.RunCommand;
 import com.seattlesolvers.solverslib.command.button.Trigger;
 
@@ -68,6 +69,16 @@ public class PidBaseSubsystem extends MotorOrCrServoSubsystem {
      */
     public Command holdCurrentSetPointCommand() {
         return getToAndHoldSetPointCommand(()->pidController.getSetpoint());
+    }
+
+    /**
+     * Creates a Command that keeps the mechanism in its current setpoint place using PID control.
+     *
+     * @return a Command requiring this subsystem
+     */
+    public Command holdCurrentPoseCommand() {
+        return new InstantCommand(()->pidController.setSetpoint(getPose()))
+                .andThen(holdCurrentSetPointCommand());
     }
 
     /**

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Libraries.MMLib.Subsystems.Motor.Position;
 
 import com.seattlesolvers.solverslib.command.Command;
+import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.Subsystem;
 
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.Subsystems.Motor.Base.ProfiledPidBase;
@@ -87,5 +88,15 @@ public class PositionProfiledPidSubsystem extends ProfiledPidBase {
      */
     public Command holdCurrentSetPointCommand() {
         return getToAndHoldSetPointCommand(()-> profiledPIDController.getGoal().position);
+    }
+
+    /**
+     * Creates a Command that keeps the mechanism in its current setpoint place using PID control.
+     *
+     * @return a Command requiring this subsystem
+     */
+    public Command holdCurrentPoseCommand() {
+        return new InstantCommand(()->profiledPIDController.setGoal(getPose()))
+                .andThen(holdCurrentSetPointCommand());
     }
 }
