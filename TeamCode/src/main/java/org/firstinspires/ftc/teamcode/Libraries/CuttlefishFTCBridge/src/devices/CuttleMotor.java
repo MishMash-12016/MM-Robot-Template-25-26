@@ -55,7 +55,7 @@ public class CuttleMotor {
      * @return power sent to motor
      */
     public double getPower() {
-        return sign * power;
+        return power;
     }
 
 

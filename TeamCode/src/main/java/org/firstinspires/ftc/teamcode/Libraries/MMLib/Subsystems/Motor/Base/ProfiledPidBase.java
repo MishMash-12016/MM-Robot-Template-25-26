@@ -335,7 +335,7 @@ public class ProfiledPidBase extends MotorOrCrServoSubsystem {
             );
 
             MMUtils.updateIfChanged(
-                    debugKsSupplier,
+                    debugKgSupplier,
                     feedforward::getKg,
                     feedforward::setKg
             );
