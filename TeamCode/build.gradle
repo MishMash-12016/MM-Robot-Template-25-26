@@ -60,7 +60,7 @@ dependencies {
 
     // Pedro Pathing
     implementation "com.pedropathing:pedro:1.0.9" // Pedro Pathing Library
-    implementation "com.acmerobotics.dashboard:dashboard:0.4.16" // FTC Dashboard
+    implementation "com.acmerobotics.dashboard:dashboard:0.4.17" // FTC Dashboard
     //noinspection GradleDependency
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7'
     //noinspection GradleDependency
