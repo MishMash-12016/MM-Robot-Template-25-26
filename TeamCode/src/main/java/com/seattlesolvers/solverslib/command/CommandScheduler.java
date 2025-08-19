@@ -425,6 +425,8 @@ public final class CommandScheduler {
         for (Command command : toCancel) {
             cancel(command);
         }
+
+        m_runningNoReqDefaults.clear();
     }
 
     /**
