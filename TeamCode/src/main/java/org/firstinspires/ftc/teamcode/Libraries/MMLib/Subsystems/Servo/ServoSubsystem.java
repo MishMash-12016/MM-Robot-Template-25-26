@@ -49,6 +49,16 @@ public class ServoSubsystem extends MMSubsystem {
     }
 
     /**
+     * Instantly moves all servos to the given position.
+     *
+     * @param position the target position [0.0, 1.0]
+     * @return a RunCommand that moves the servos immediately
+     */
+    public Command setPositionRunCommand(double position) {
+        return new RunCommand(() -> setPosition(position), this);
+    }
+
+    /**
      * Moves all servos to the target position gradually over a specified time.
      *
      * @param targetPose         the final target position [0.0, 1.0]
@@ -186,6 +196,10 @@ public class ServoSubsystem extends MMSubsystem {
         return this;
     }
 
+    public ServoSubsystem withDefaultCommand(Command command){
+        setDefaultCommand(command);
+        return this;
+    }
 
     @Override
     public void resetHub(){
