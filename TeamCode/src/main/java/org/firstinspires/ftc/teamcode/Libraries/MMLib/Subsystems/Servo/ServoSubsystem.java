@@ -186,17 +186,29 @@ public class ServoSubsystem extends MMSubsystem {
         return this;
     }
 
+
     @Override
     public void resetHub(){
+
+        ArrayList<CuttleServo> tempList = new ArrayList<>();
         for(CuttleServo servo : servoList){
             if(servo.getFtcServo()){
+                tempList.add(new CuttleServo(MMRobot.getInstance().currentOpMode.hardwareMap, servo.getServoName())
+                    .setDirection(servo.getDirection())
+                    .setOffset(servo.getOffset()));
 
-            } else if(servo.hub != null && servo.hub.getHubName().equals(MMRobot.getInstance().controlHub.getHubName())){
-                servo.hub = MMRobot.getInstance().controlHub;
+            } else if(servo.hub.getHubName().equals(MMRobot.getInstance().controlHub.getHubName())){
+                tempList.add(new CuttleServo(MMRobot.getInstance().controlHub, servo.port)
+                    .setDirection(servo.getDirection())
+                    .setOffset(servo.getOffset()));
             }
-            else if(servo.hub != null && servo.hub.getHubName().equals(MMRobot.getInstance().expansionHub.getHubName())){
-                servo.hub = MMRobot.getInstance().expansionHub;
+            else {
+                tempList.add(new CuttleServo(MMRobot.getInstance().expansionHub, servo.port)
+                    .setDirection(servo.getDirection())
+                    .setOffset(servo.getOffset()));
             }
         }
+
+        servoList = tempList;
     }
 }
