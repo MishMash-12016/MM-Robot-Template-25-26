@@ -289,7 +289,7 @@ public final class CommandScheduler {
         Iterator<Map.Entry<Subsystem, NoRequirementsCommand>> it = m_runningNoReqDefaults.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<Subsystem, NoRequirementsCommand> entry = it.next();
-            if (m_trueRequirements.containsKey(entry.getKey())) {
+            if (m_trueRequirements.containsKey(entry.getKey()) && !entry.getValue().equals(m_runningNoReqDefaults.get(entry.getKey()))) {
                 cancel(entry.getValue());
                 it.remove();
             }
