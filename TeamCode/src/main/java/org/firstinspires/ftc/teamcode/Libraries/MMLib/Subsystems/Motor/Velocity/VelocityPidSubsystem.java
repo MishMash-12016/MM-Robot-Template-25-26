@@ -23,6 +23,7 @@ import Ori.Coval.Logging.Logger.KoalaLog;
 //TODO: add sysid
 public class VelocityPidSubsystem extends PidBaseSubsystem {
 
+    SimpleMotorFeedforward feedforward;
 
     public VelocityPidSubsystem(String subsystemName) {
         super(subsystemName);

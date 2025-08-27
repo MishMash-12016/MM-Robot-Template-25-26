@@ -24,7 +24,6 @@ public class PidBaseSubsystem extends MotorOrCrServoSubsystem {
     // Encoder that measures current position and velocity (ticks converted via ratio)
     private CuttleEncoder encoder;
     public PIDController pidController = new PIDController(0, 0, 0);
-    public SimpleMotorFeedforward feedforward;
 
     //base
     public PidBaseSubsystem(String subsystemName) {
