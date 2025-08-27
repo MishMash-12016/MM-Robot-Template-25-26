@@ -52,14 +52,9 @@ public final class CommandScheduler {
     // commands.
     private final Map<Command, CommandState> m_scheduledCommands = new LinkedHashMap<>();
 
-    // Keeps track of which default NoRequirementsCommand is running for each subsystem
-    private final Map<Subsystem, NoRequirementsCommand> m_runningNoReqDefaults = new LinkedHashMap<>();
-
-
     // A map from required subsystems to their requiring commands.  Also used as a set of the
     //currently-required subsystems.
     private final Map<Subsystem, Command> m_requirements = new LinkedHashMap<>();
-    private final Map<Subsystem, Command> m_trueRequirements = new LinkedHashMap<>();
 
     // A map from subsystems registered with the scheduler to their default commands.  Also used
     // as a list of currently-registered subsystems.
@@ -115,7 +110,6 @@ public final class CommandScheduler {
         }
         for (Subsystem requirement : requirements) {
             m_requirements.put(requirement, command);
-            m_trueRequirements.put(requirement, command);
         }
     }
 
@@ -237,7 +231,6 @@ public final class CommandScheduler {
                     action.accept(command);
                 }
                 m_requirements.keySet().removeAll(command.getRequirements());
-                m_trueRequirements.keySet().removeAll(command.getRequirements());
                 iterator.remove();
                 continue;
             }
@@ -254,7 +247,6 @@ public final class CommandScheduler {
                 iterator.remove();
 
                 m_requirements.keySet().removeAll(command.getRequirements());
-                m_trueRequirements.keySet().removeAll(command.getRequirements());
             }
         }
         m_inRunLoop = false;
@@ -272,56 +264,12 @@ public final class CommandScheduler {
 
         // Add default commands for un-required registered subsystems.
         for (Map.Entry<Subsystem, Command> subsystemCommand : m_subsystems.entrySet()) {
-            Subsystem subsystem = subsystemCommand.getKey();
-            Command defaultCommand = subsystemCommand.getValue();
-
-            // Only wrap if default command exists and subsystem not in true requirements
-            if (defaultCommand != null && !m_trueRequirements.containsKey(subsystem)) {
-                if (!m_runningNoReqDefaults.containsKey(subsystem)) {
-                    NoRequirementsCommand wrapped = new NoRequirementsCommand(defaultCommand);
-                    m_runningNoReqDefaults.put(subsystem, wrapped);
-                    schedule(wrapped);
-                }
+            if (!m_requirements.containsKey(subsystemCommand.getKey())
+                    && subsystemCommand.getValue() != null) {
+                schedule(subsystemCommand.getValue());
             }
-        }
-
-        // Cancel NoRequirementsCommands if their subsystem now has a true requirement
-        Iterator<Map.Entry<Subsystem, NoRequirementsCommand>> it = m_runningNoReqDefaults.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<Subsystem, NoRequirementsCommand> entry = it.next();
-            if (m_trueRequirements.containsKey(entry.getKey()) && !entry.getValue().equals(m_runningNoReqDefaults.get(entry.getKey()))) {
-                cancel(entry.getValue());
-                it.remove();
-            }
-        }
-
-    }
-
-    void updateTrueRequirements(Command command, Set<Subsystem> trueRequirements) {
-        // Remove only the entries that this command actually owns
-        for (Subsystem s : command.getRequirements()) {
-            Command owner = m_trueRequirements.get(s);
-            if (owner == command) {
-                m_trueRequirements.remove(s);
-            }
-        }
-
-        // Add the new true requirements mapping them to this command
-        for (Subsystem s : trueRequirements) {
-            m_trueRequirements.put(s, command);
-        }
-
-        for (Subsystem s : trueRequirements) {
-            Command currentOwner = m_trueRequirements.get(s);
-            if (currentOwner != null && currentOwner != command) {
-                // cancel the conflicting command
-                cancel(currentOwner);
-            }
-            // assign this subsystem to our command
-            m_trueRequirements.put(s, command);
         }
     }
-
 
     /**
      * Registers subsystems with the scheduler.  This must be called for the subsystem's periodic
@@ -411,7 +359,6 @@ public final class CommandScheduler {
             }
             m_scheduledCommands.remove(command);
             m_requirements.keySet().removeAll(command.getRequirements());
-            m_trueRequirements.keySet().removeAll(command.getRequirements());
         }
     }
 
@@ -425,8 +372,6 @@ public final class CommandScheduler {
         for (Command command : toCancel) {
             cancel(command);
         }
-
-        m_runningNoReqDefaults.clear();
     }
 
     /**

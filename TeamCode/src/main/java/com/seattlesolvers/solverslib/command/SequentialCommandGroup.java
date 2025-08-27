@@ -8,9 +8,7 @@
 package com.seattlesolvers.solverslib.command;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * A CommandGroups that runs a list of commands in sequence.
@@ -60,7 +58,6 @@ public class SequentialCommandGroup extends CommandGroupBase {
 
         if (!m_commands.isEmpty()) {
             m_commands.get(0).initialize();
-            CommandScheduler.getInstance().updateTrueRequirements(this, m_commands.get(0).getRequirements());
         }
     }
 
@@ -81,7 +78,6 @@ public class SequentialCommandGroup extends CommandGroupBase {
             m_currentCommandIndex++;
             if (m_currentCommandIndex < m_commands.size()) {
                 m_commands.get(m_currentCommandIndex).initialize();
-                CommandScheduler.getInstance().updateTrueRequirements(this, m_commands.get(m_currentCommandIndex).getRequirements());
             }
         }
     }
