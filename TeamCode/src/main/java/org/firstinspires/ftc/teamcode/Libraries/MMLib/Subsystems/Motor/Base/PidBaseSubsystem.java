@@ -115,6 +115,10 @@ public class PidBaseSubsystem extends MotorOrCrServoSubsystem {
         encoder.setPose(pose);
     }
 
+    public void setSetpoint(double setpoint){
+        pidController.setSetpoint(setpoint);
+    }
+
     public PidBaseSubsystem withEncoder(CuttleRevHub revHub, int encoderPort, double cpr, Direction direction) {
         encoder = new CuttleEncoder(revHub, encoderPort, cpr, direction);
         return this;
@@ -219,5 +223,6 @@ public class PidBaseSubsystem extends MotorOrCrServoSubsystem {
             encoder.hub = MMRobot.getInstance().expansionHub;
         }
         setPose(pose);
+        setSetpoint(pose);
     }
 }

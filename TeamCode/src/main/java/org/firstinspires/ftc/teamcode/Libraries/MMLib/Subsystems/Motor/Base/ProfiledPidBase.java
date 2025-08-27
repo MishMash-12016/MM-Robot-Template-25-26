@@ -72,6 +72,10 @@ public class ProfiledPidBase extends MotorOrCrServoSubsystem {
         return profiledPIDController.getGoal().position;
     }
 
+    public void setSetpoint(double setpoint){
+        profiledPIDController.setGoal(setpoint);
+    }
+
     public void setPose(double pose) {
         encoder.setPose(pose);
     }
@@ -246,6 +250,7 @@ public class ProfiledPidBase extends MotorOrCrServoSubsystem {
             encoder.hub = MMRobot.getInstance().expansionHub;
         }
         setPose(pose);
+        setSetpoint(pose);
     }
 
 
