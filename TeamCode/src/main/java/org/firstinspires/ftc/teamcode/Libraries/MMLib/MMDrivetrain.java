@@ -145,8 +145,12 @@ public class MMDrivetrain extends SubsystemBase {
         );
     }
 
+    public void setPose(Pose pose){
+        follower.setPose(pose);
+    }
+
     public void setPose(double x, double y, double heading){
-        follower.setPose(new Pose(x, y, heading));
+        this.setPose(new Pose(x, y, heading));
     }
 
     /**
