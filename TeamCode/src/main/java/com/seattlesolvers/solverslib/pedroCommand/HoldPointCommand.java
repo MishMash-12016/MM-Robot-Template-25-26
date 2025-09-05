@@ -1,3 +1,9 @@
+/**
+ * old pedro v1 command
+ */
+
+
+/*
 package com.seattlesolvers.solverslib.pedroCommand;
 
 import com.pedropathing.follower.Follower;
@@ -6,15 +12,18 @@ import com.pedropathing.pathgen.BezierPoint;
 import com.pedropathing.pathgen.Point;
 import com.seattlesolvers.solverslib.command.CommandBase;
 
+*/
 /**
  * A command that calls {@link Follower#holdPoint(Pose)}
- */
+ *//*
+
 public class HoldPointCommand extends CommandBase {
     private final Follower follower;
     private final Pose pose;
     private final boolean isFieldCentric;
 
-    /**
+    */
+/**
      * Moves robot to a new {@link Pose} that is either field or robot centric
      * @param follower The follower object
      * @param pose The pose that the robot should go to (see isFieldCentric parameter)
@@ -23,7 +32,8 @@ public class HoldPointCommand extends CommandBase {
      *             {@link Pose#getY()} +X is left, -X is right
      *             {@link Pose#getHeading()} Heading is in radians, +heading turns left and -heading turns right
      * @param isFieldCentric Whether the move should be field centric or robot centric (based off the follower's position at the time of scheduling the command)
-     */
+     *//*
+
     public HoldPointCommand(Follower follower, Pose pose, boolean isFieldCentric) {
         this.follower = follower;
         this.pose = pose;
@@ -60,4 +70,4 @@ public class HoldPointCommand extends CommandBase {
     public void end(boolean interrupted) {
         follower.breakFollowing();
     }
-}
+}*/

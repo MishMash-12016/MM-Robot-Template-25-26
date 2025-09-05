@@ -42,9 +42,7 @@ repositories {
     maven {
         url = 'https://maven.brott.dev/'
     }
-    maven {
-        url = "https://maven.pedropathing.com/"
-    }
+
     maven {
         url "https://repo.dairy.foundation/releases"
     }
@@ -58,8 +56,6 @@ dependencies {
     implementation project(':FtcRobotController')
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
 
-    // Pedro Pathing
-    implementation "com.pedropathing:pedro:1.0.9" // Pedro Pathing Library
     implementation "com.acmerobotics.dashboard:dashboard:0.4.17" // FTC Dashboard
     //noinspection GradleDependency
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7'
