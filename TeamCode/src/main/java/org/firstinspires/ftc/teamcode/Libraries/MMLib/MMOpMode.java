@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import Ori.Coval.Logging.AutoLog;
 import Ori.Coval.Logging.AutoLogManager;
 import Ori.Coval.Logging.Logger.KoalaLog;
-
 
 /**
  * this class represents a wrapper for the default Teleop.
@@ -75,7 +75,7 @@ public abstract class MMOpMode extends LinearOpMode {
             MMRobot.getInstance().expansionHub.pullBulkData();  //updates the expansionHub sensors
         }
 
-        MMDrivetrain.update();
+        MMDrivetrain.getInstance().update();
 
         telemetry.update();                                       //updates the telemetry
 

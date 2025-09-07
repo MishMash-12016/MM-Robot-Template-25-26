@@ -1,33 +1,37 @@
 package org.firstinspires.ftc.teamcode.Libraries.MMLib;
 
-import com.acmerobotics.dashboard.FtcDashboard;
+import com.bylazar.configurables.annotations.IgnoreConfigurable;
+import com.bylazar.telemetry.TelemetryManager;
 import com.pedropathing.follower.Follower;
-import com.pedropathing.follower.FollowerConstants;
-import com.pedropathing.localization.Pose;
-import com.pedropathing.pathgen.Path;
-import com.pedropathing.pathgen.PathChain;
+
+import com.pedropathing.geometry.Pose;
+import com.pedropathing.paths.Path;
+import com.pedropathing.paths.PathChain;
 import com.seattlesolvers.solverslib.command.CommandBase;
 import com.seattlesolvers.solverslib.command.RunCommand;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
-import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
-import com.seattlesolvers.solverslib.pedroCommand.HoldPointCommand;
 
-import org.firstinspires.ftc.teamcode.Libraries.pedroPathing.pedroPathing.constants.FConstants;
-import org.firstinspires.ftc.teamcode.Libraries.pedroPathing.pedroPathing.constants.LConstants;
+import org.firstinspires.ftc.teamcode.Libraries.pedroPathing.Constants;
+import org.firstinspires.ftc.teamcode.Libraries.pedroPathing.FollowPathCommand;
+import org.firstinspires.ftc.teamcode.Libraries.pedroPathing.HoldPointCommand;
+import org.firstinspires.ftc.teamcode.Libraries.pedroPathing.Tuning;
 import org.firstinspires.ftc.teamcode.MMRobot;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import Ori.Coval.Logging.AutoLog;
+
+@AutoLog
 public class MMDrivetrain extends SubsystemBase {
-    public Follower follower;
 
     public double slowModeRatioForward = 0.3;
     public double slowModeRatioLateral = 0.3;
     public double slowModeRatioRotation = 0.25;
 
-
-    public static MMDrivetrain instance;
+    @IgnoreConfigurable
+    private static MMDrivetrain instance;
+    public static Follower follower;
 
     public static synchronized MMDrivetrain getInstance() {
         if (instance == null) {
@@ -36,25 +40,23 @@ public class MMDrivetrain extends SubsystemBase {
         return instance;
     }
 
-    public static void resetFollower(){
-        if(instance!=null){
-            instance.follower.initialize();
+    public Follower getFollower() {
+        if (instance != null) {
+            follower = Constants.createFollower(MMRobot.getInstance().currentOpMode.hardwareMap);
         }
+        return follower;
     }
 
-    public static void update(){
-        if(instance != null){
-            instance.follower.update();             //updates the follower
+    public void update() {
+        if (instance != null) {
+            follower.update();             //updates the follower
 
-            if(instance.follower.getCurrentPath() != null) {
-                instance.follower.telemetryDebug(FtcDashboard.getInstance().getTelemetry());//puts pedro data(robot pose, speed..) on the FtcDashboard
-            }
         }
     }
 
     public MMDrivetrain() {
-        follower = new Follower(MMRobot.getInstance().currentOpMode.hardwareMap, FConstants.class, LConstants.class);
-        follower.setStartingPose(new Pose(0,0,0));
+        follower = Constants.createFollower(MMRobot.getInstance().currentOpMode.hardwareMap);
+        follower.setStartingPose(new Pose(0, 0, 0));
     }
 
     public CommandBase holdPointCommand(Pose pose) {
@@ -72,11 +74,11 @@ public class MMDrivetrain extends SubsystemBase {
     }
 
     public CommandBase followPathCommand(Path path) {
-        return this.followPathCommand(path, FollowerConstants.automaticHoldEnd);
+        return this.followPathCommand(path, true);
     }
 
     public CommandBase followPathCommand(PathChain pathChain) {
-        CommandBase followPathCommand = new FollowPathCommand(follower, pathChain, FollowerConstants.automaticHoldEnd);
+        CommandBase followPathCommand = new FollowPathCommand(follower, pathChain, true);
         followPathCommand.addRequirements(this);
 
         return followPathCommand;
@@ -90,15 +92,14 @@ public class MMDrivetrain extends SubsystemBase {
         return (CommandBase) new RunCommand(() -> {
 
             if (slowMode.getAsBoolean()) {
-                follower.setTeleOpMovementVectors(//TODO: add variables for the math.pow
+                follower.setTeleOpDrive(//TODO: add variables for the math.pow
                         Math.pow(forwardDrive.getAsDouble(), 5) * slowModeRatioForward,
                         Math.pow(lateralDrive.getAsDouble(), 5) * slowModeRatioLateral,
                         Math.pow(heading.getAsDouble(), 1) * slowModeRatioRotation,
                         robotCentric);
-            }
-            else {
+            } else {
                 //TODO: add math.pow with variables
-                follower.setTeleOpMovementVectors(forwardDrive.getAsDouble(), lateralDrive.getAsDouble(), heading.getAsDouble(), robotCentric);
+                follower.setTeleOpDrive(forwardDrive.getAsDouble(), lateralDrive.getAsDouble(), heading.getAsDouble(), robotCentric);
             }
 
             follower.update();
@@ -106,7 +107,7 @@ public class MMDrivetrain extends SubsystemBase {
                 .beforeStarting(() -> {
                     follower.startTeleopDrive();
                     follower.setMaxPower(2);//TODO:testing to see if this works and if it is the right way to do this
-                }).whenFinished(()-> follower.setMaxPower(1));
+                }).whenFinished(() -> follower.setMaxPower(1));
     }
 
     public CommandBase turnCommand(double radians, boolean isLeft) {
@@ -126,7 +127,7 @@ public class MMDrivetrain extends SubsystemBase {
         return this.turnCommand(Math.toRadians(degrees), isLeft);
     }
 
-    public void resetYaw(){
+    public void resetYaw() {
         Pose pose = follower.getPose();
         pose.setHeading(0);
         follower.setPose(pose);
@@ -138,18 +139,18 @@ public class MMDrivetrain extends SubsystemBase {
     public void enableTeleopDriveDefaultCommand(BooleanSupplier slowMode) {
         MMRobot mmRobot = MMRobot.getInstance();
         setDefaultCommand(driveCommand(
-                ()-> mmRobot.gamepadEx1.getLeftY(),
-                ()-> -mmRobot.gamepadEx1.getLeftX(),
-                ()-> -mmRobot.gamepadEx1.getRightX(),
+                () -> mmRobot.gamepadEx1.getLeftY(),
+                () -> -mmRobot.gamepadEx1.getLeftX(),
+                () -> -mmRobot.gamepadEx1.getRightX(),
                 false, slowMode)
         );
     }
 
-    public void setPose(Pose pose){
+    public void setPose(Pose pose) {
         follower.setPose(pose);
     }
 
-    public void setPose(double x, double y, double heading){
+    public void setPose(double x, double y, double heading) {
         this.setPose(new Pose(x, y, heading));
     }
 
@@ -157,15 +158,18 @@ public class MMDrivetrain extends SubsystemBase {
      * disables the Default Command(the default command is the drive field centric command)
      */
     public void disableTeleopDriveDefaultCommand() {
-        setDefaultCommand(new RunCommand(()->{}, this));
+        setDefaultCommand(new RunCommand(() -> {
+        }, this));
     }
 
     public void setSlowModeRatioForward(double slowModeRatioForward) {
         this.slowModeRatioForward = slowModeRatioForward;
     }
+
     public void setSlowModeRatioLateral(double slowModeRatioLateral) {
         this.slowModeRatioLateral = slowModeRatioLateral;
     }
+
     public void setSlowModeRatioRotation(double slowModeRatioRotation) {
         this.slowModeRatioRotation = slowModeRatioRotation;
     }
