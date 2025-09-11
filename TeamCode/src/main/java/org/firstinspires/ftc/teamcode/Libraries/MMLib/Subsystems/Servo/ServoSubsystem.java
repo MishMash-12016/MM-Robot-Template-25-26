@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.MMRobot;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 import Ori.Coval.Logging.AutoLogOutput;
 import Ori.Coval.Logging.Logger.KoalaLog;
@@ -56,6 +57,9 @@ public class ServoSubsystem extends MMSubsystem {
      */
     public Command setPositionRunCommand(double position) {
         return new RunCommand(() -> setPosition(position), this);
+    }
+    public Command setPositionCommand(DoubleSupplier position) {
+        return new RunCommand(() -> setPosition(position.getAsDouble()), this);
     }
 
     /**
