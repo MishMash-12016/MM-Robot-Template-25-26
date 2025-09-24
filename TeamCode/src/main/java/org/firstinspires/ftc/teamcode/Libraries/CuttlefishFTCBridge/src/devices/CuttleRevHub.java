@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode.Libraries.CuttlefishFTCBridge.src.devices;
+
 import android.graphics.Color;
 
 import com.qualcomm.hardware.lynx.LynxCommExceptionHandler;
@@ -7,16 +8,14 @@ import com.qualcomm.hardware.lynx.LynxNackException;
 import com.qualcomm.hardware.lynx.commands.LynxCommand;
 import com.qualcomm.hardware.lynx.commands.LynxMessage;
 import com.qualcomm.hardware.lynx.commands.LynxRespondable;
-
+import com.qualcomm.hardware.lynx.commands.core.LynxDekaInterfaceCommand;
 import com.qualcomm.hardware.lynx.commands.core.LynxGetADCCommand;
 import com.qualcomm.hardware.lynx.commands.core.LynxGetADCResponse;
+import com.qualcomm.hardware.lynx.commands.core.LynxGetBulkInputDataCommand;
+import com.qualcomm.hardware.lynx.commands.core.LynxGetBulkInputDataResponse;
 import com.qualcomm.hardware.lynx.commands.core.LynxI2cConfigureChannelCommand;
 import com.qualcomm.hardware.lynx.commands.core.LynxSetMotorChannelModeCommand;
 import com.qualcomm.hardware.lynx.commands.core.LynxSetMotorConstantPowerCommand;
-
-import com.qualcomm.hardware.lynx.commands.core.LynxDekaInterfaceCommand;
-import com.qualcomm.hardware.lynx.commands.core.LynxGetBulkInputDataCommand;
-import com.qualcomm.hardware.lynx.commands.core.LynxGetBulkInputDataResponse;
 import com.qualcomm.hardware.lynx.commands.core.LynxSetServoConfigurationCommand;
 import com.qualcomm.hardware.lynx.commands.core.LynxSetServoEnableCommand;
 import com.qualcomm.hardware.lynx.commands.core.LynxSetServoPulseWidthCommand;

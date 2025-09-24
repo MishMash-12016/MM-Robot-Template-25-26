@@ -19,7 +19,6 @@ import java.util.List;
 import Ori.Coval.Logging.AutoLogManager;
 import Ori.Coval.Logging.Logger.KoalaLog;
 
-
 /**
  * this class represents a wrapper for the default Teleop.
  * <p>
@@ -75,13 +74,13 @@ public abstract class MMOpMode extends LinearOpMode {
             MMRobot.getInstance().expansionHub.pullBulkData();  //updates the expansionHub sensors
         }
 
-        MMDrivetrain.update();
-
         telemetry.update();                                       //updates the telemetry
 
         FtcDashboard.getInstance().getTelemetry().update();       //updates the dashboard
 
         AutoLogManager.periodic();
+
+        //MMDrivetrain.getInstance().update();
     }
 
     public abstract void onPlayLoop();

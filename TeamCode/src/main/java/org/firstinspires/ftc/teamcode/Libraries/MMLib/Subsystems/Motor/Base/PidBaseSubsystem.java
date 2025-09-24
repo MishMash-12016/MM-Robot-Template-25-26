@@ -10,7 +10,6 @@ import org.firstinspires.ftc.teamcode.Libraries.CuttlefishFTCBridge.src.devices.
 import org.firstinspires.ftc.teamcode.Libraries.CuttlefishFTCBridge.src.devices.CuttleRevHub;
 import org.firstinspires.ftc.teamcode.Libraries.CuttlefishFTCBridge.src.utils.Direction;
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.PID.Controllers.PIDController;
-import org.firstinspires.ftc.teamcode.Libraries.MMLib.PID.FeedForwards.SimpleMotorFeedforward;
 import org.firstinspires.ftc.teamcode.MMRobot;
 
 import java.util.function.BooleanSupplier;
