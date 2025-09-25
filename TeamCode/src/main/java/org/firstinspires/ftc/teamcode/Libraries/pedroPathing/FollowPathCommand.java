@@ -5,6 +5,8 @@ import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
 import com.seattlesolvers.solverslib.command.CommandBase;
 
+import org.firstinspires.ftc.teamcode.Libraries.MMLib.MMDrivetrain;
+
 
 // Thanks Powercube from Watt-sUP 16166, we copied verbatim
 
@@ -42,6 +44,7 @@ public class FollowPathCommand extends CommandBase {
         this.pathChain = pathChain;
         this.holdEnd = holdEnd;
         this.maxPower = maxPower;
+        addRequirements(MMDrivetrain.getInstance());
     }
 
     public FollowPathCommand(Follower follower, Path pathChain) {
@@ -61,6 +64,7 @@ public class FollowPathCommand extends CommandBase {
         this.pathChain = new PathChain(pathChain);
         this.holdEnd = holdEnd;
         this.maxPower = maxPower;
+        addRequirements(MMDrivetrain.getInstance());
     }
 
     /**
