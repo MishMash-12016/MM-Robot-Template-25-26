@@ -3,14 +3,13 @@ package org.firstinspires.ftc.teamcode.Libraries.MMLib;
 import com.bylazar.configurables.annotations.IgnoreConfigurable;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
-import com.pedropathing.paths.Path;
-import com.pedropathing.paths.PathChain;
 import com.seattlesolvers.solverslib.command.CommandBase;
 import com.seattlesolvers.solverslib.command.RunCommand;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 
+import org.firstinspires.ftc.teamcode.Libraries.MMLib.Subsystems.MMSubsystem;
 import org.firstinspires.ftc.teamcode.Libraries.pedroPathing.Constants;
-import org.firstinspires.ftc.teamcode.Libraries.pedroPathing.FollowPathCommand;
+import org.firstinspires.ftc.teamcode.Libraries.pedroPathing.Drawing;
 import org.firstinspires.ftc.teamcode.Libraries.pedroPathing.HoldPointCommand;
 import org.firstinspires.ftc.teamcode.MMRobot;
 
@@ -20,7 +19,7 @@ import java.util.function.DoubleSupplier;
 import Ori.Coval.Logging.AutoLog;
 
 @AutoLog
-public class MMDrivetrain extends SubsystemBase {
+public class MMDrivetrain extends MMSubsystem {
 
     public double slowModeRatioForward = 0.3;
     public double slowModeRatioLateral = 0.3;
@@ -47,7 +46,7 @@ public class MMDrivetrain extends SubsystemBase {
     public void update() {
         if (instance != null) {
             follower.update();             //updates the follower
-
+            Drawing.drawDebug(follower);
         }
     }
 
@@ -56,29 +55,9 @@ public class MMDrivetrain extends SubsystemBase {
         follower.setStartingPose(new Pose(0, 0, 0));
     }
 
-    public CommandBase holdPointCommand(Pose pose) {
-        CommandBase holdPointCommand = new HoldPointCommand(follower, pose, false);
-        holdPointCommand.addRequirements(this);
-
-        return holdPointCommand;
-    }
-
-    public CommandBase followPathCommand(Path path, boolean holdEnd) {
-        CommandBase followPathCommand = new FollowPathCommand(follower, path, holdEnd);
-        followPathCommand.addRequirements(this);
-
-        return followPathCommand;
-    }
-
-    public CommandBase followPathCommand(Path path) {
-        return this.followPathCommand(path, true);
-    }
-
-    public CommandBase followPathCommand(PathChain pathChain) {
-        CommandBase followPathCommand = new FollowPathCommand(follower, pathChain, true);
-        followPathCommand.addRequirements(this);
-
-        return followPathCommand;
+    @Override
+    public void resetHub() {
+//        instance = null;
     }
 
     public CommandBase driveCommand(DoubleSupplier forwardDrive, DoubleSupplier lateralDrive, DoubleSupplier heading, BooleanSupplier slowMode) {
@@ -109,11 +88,11 @@ public class MMDrivetrain extends SubsystemBase {
 
     public CommandBase turnCommand(double radians, boolean isLeft) {
         Pose temp = new Pose(follower.getPose().getX(), follower.getPose().getY(), follower.getPose().getHeading() + (isLeft ? radians : -radians));
-        return this.holdPointCommand(temp);
+        return new HoldPointCommand(follower, temp, false);
     }
 
     public CommandBase turnToCommand(double radians) {
-        return this.holdPointCommand(new Pose(follower.getPose().getX(), follower.getPose().getY(), Math.toRadians(radians)));
+        return new HoldPointCommand(follower, new Pose(follower.getPose().getX(), follower.getPose().getY(), Math.toRadians(radians)), true);
     }
 
     public CommandBase turnToDegreesCommand(double degrees) {
