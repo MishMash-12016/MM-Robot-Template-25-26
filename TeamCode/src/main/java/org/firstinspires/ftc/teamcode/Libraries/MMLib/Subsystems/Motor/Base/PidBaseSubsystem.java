@@ -61,6 +61,16 @@ public class PidBaseSubsystem extends MotorOrCrServoSubsystem {
     }
 
     /**
+     * Creates a Command that moves the mechanism to the specified setpoint using PID control.
+     *
+     * @param setPoint target setpoint (in encoder units, adjusted by ratio)
+     * @return a Command requiring this subsystem
+     */
+    public Command getToSetpointCommand(DoubleSupplier setPoint) {
+        return getToAndHoldSetPointCommand(setPoint).interruptOn(this::getAtSetpoint);
+    }
+
+    /**
      * Creates a Command that keeps the mechanism in its current setpoint place using PID control.
      *
      * @return a Command requiring this subsystem

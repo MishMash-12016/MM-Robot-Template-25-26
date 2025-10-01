@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.Libraries.MMLib.Utils.OpModeVeriables.Alli
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.Utils.OpModeVeriables.AllianceSide;
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.Utils.OpModeVeriables.OpModeType;
 import org.firstinspires.ftc.teamcode.MMRobot;
+import org.firstinspires.ftc.teamcode.subsystems.SpindexerSubsystem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,7 +81,7 @@ public abstract class MMOpMode extends LinearOpMode {
 
         AutoLogManager.periodic();
 
-        //MMDrivetrain.getInstance().update();
+        MMDrivetrain.update();
     }
 
     public abstract void onPlayLoop();
@@ -92,6 +93,7 @@ public abstract class MMOpMode extends LinearOpMode {
      */
     public void reset() {
         CommandScheduler.getInstance().cancelAll();
+        SpindexerSubsystem.instance = null; //todo remove
     }
 
     public void addRunnableOnInit(Runnable... runOnInit) {

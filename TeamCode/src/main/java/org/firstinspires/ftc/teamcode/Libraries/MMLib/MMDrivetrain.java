@@ -5,7 +5,6 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
 import com.seattlesolvers.solverslib.command.CommandBase;
 import com.seattlesolvers.solverslib.command.RunCommand;
-import com.seattlesolvers.solverslib.command.SubsystemBase;
 
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.Subsystems.MMSubsystem;
 import org.firstinspires.ftc.teamcode.Libraries.pedroPathing.Constants;
@@ -27,11 +26,15 @@ public class MMDrivetrain extends MMSubsystem {
 
     @IgnoreConfigurable
     private static MMDrivetrain instance;
-    public static Follower follower;
+    private static Follower follower;
 
     public static synchronized MMDrivetrain getInstance() {
         if (instance == null) {
             instance = new MMDrivetrain();
+        }
+
+        if (follower == null){
+            follower = Constants.createFollower(MMRobot.getInstance().currentOpMode.hardwareMap);
         }
         return instance;
     }
@@ -43,7 +46,7 @@ public class MMDrivetrain extends MMSubsystem {
         return follower;
     }
 
-    public void update() {
+    public static void update() {
         if (instance != null) {
             follower.update();             //updates the follower
             Drawing.drawDebug(follower);
