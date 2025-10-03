@@ -16,6 +16,8 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import Ori.Coval.Logging.AutoLog;
+import Ori.Coval.Logging.AutoLogPose2d;
+import Ori.Coval.Logging.Logger.KoalaLog;
 
 @AutoLog
 public class MMDrivetrain extends MMSubsystem {
@@ -30,7 +32,7 @@ public class MMDrivetrain extends MMSubsystem {
 
     public static synchronized MMDrivetrain getInstance() {
         if (instance == null) {
-            instance = new MMDrivetrain();
+            instance = new MMDrivetrainAutoLogged();
         }
 
         if (follower == null){
@@ -110,6 +112,18 @@ public class MMDrivetrain extends MMSubsystem {
         Pose pose = follower.getPose();
         pose.setHeading(0);
         follower.setPose(pose);
+    }
+
+    @AutoLogPose2d
+    public double[] getAScopeTargetPose(){
+        Pose TargetPose = follower.getClosestPose().getPose();
+        return new double[]{TargetPose.getX(), TargetPose.getY(), TargetPose.getHeading()};
+    }
+
+    @AutoLogPose2d
+    public double[] getAScopePose(){
+        Pose pose = follower.getPose();
+        return new double[]{pose.getX(), pose.getY(), pose.getHeading()};
     }
 
     /**
