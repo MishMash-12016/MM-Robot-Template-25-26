@@ -15,12 +15,19 @@ public class MMMotorOrCrServo {
     private CuttleMotor motor;
     private CuttleCrServo crServo;
 
+    private String crServoName;
+
     public MMMotorOrCrServo(CuttleMotor motor) {
         this.motor = motor;
     }
 
     public MMMotorOrCrServo(CuttleCrServo crServo) {
         this.crServo = crServo;
+    }
+
+    public MMMotorOrCrServo(String crServoName) {
+        this.crServoName = crServoName;
+        this.crServo = new CuttleCrServo(MMRobot.getInstance().currentOpMode.hardwareMap, crServoName);
     }
 
     /**
@@ -64,18 +71,21 @@ public class MMMotorOrCrServo {
     public void resetHub(){
         if(motor != null){
             if(motor.hub.getHubName().equals(MMRobot.getInstance().controlHub.getHubName())){
-                motor.hub = MMRobot.getInstance().controlHub;
+                motor = new CuttleMotor(MMRobot.getInstance().controlHub, motor.mPort, motor.sign == 1 ? Direction.FORWARD : Direction.REVERSE);
             }
             else {
-                motor.hub = MMRobot.getInstance().expansionHub;
+                motor = new CuttleMotor(MMRobot.getInstance().expansionHub, motor.mPort, motor.sign == 1 ? Direction.FORWARD : Direction.REVERSE);
             }
         }
         if(crServo != null){
-            if(crServo.hub.getHubName().equals(MMRobot.getInstance().controlHub.getHubName())){
-                crServo.hub = MMRobot.getInstance().controlHub;
+            if(crServo.FTCServo){
+                crServo = new CuttleCrServo(MMRobot.getInstance().currentOpMode.hardwareMap, crServoName);
+            }
+            else if(crServo.hub.getHubName().equals(MMRobot.getInstance().controlHub.getHubName())){
+                crServo = new CuttleCrServo(MMRobot.getInstance().controlHub, crServo.port, crServo.direction);
             }
             else {
-                crServo.hub = MMRobot.getInstance().expansionHub;
+                crServo = new CuttleCrServo(MMRobot.getInstance().expansionHub, crServo.port, crServo.direction);
             }
         }
     }

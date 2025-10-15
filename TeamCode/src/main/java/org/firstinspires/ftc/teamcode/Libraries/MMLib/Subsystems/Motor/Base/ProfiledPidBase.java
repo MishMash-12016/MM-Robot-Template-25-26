@@ -244,10 +244,12 @@ public class ProfiledPidBase extends MotorOrCrServoSubsystem {
         super.resetHub();
         double pose = getPose();
         if(encoder.hub.getHubName().equals(MMRobot.getInstance().controlHub.getHubName())){
-            encoder.hub = MMRobot.getInstance().controlHub;
+            encoder = new CuttleEncoder(MMRobot.getInstance().controlHub, encoder.mPort, encoder.encTicks,
+                encoder.direction == 1 ? Direction.FORWARD : Direction.REVERSE);
         }
         else {
-            encoder.hub = MMRobot.getInstance().expansionHub;
+            encoder = new CuttleEncoder(MMRobot.getInstance().expansionHub, encoder.mPort, encoder.encTicks,
+                encoder.direction == 1 ? Direction.FORWARD : Direction.REVERSE);
         }
         setPose(pose);
         setSetpoint(pose);

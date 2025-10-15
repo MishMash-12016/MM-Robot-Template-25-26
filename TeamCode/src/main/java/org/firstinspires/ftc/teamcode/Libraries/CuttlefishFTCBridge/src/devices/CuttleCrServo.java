@@ -11,9 +11,9 @@ public class CuttleCrServo{
     private double power = 0.0;
     public int port;
     boolean enabled = false;
-    final boolean FTCServo;
+    public final boolean FTCServo;
 
-    Direction direction = Direction.FORWARD;
+    public Direction direction = Direction.FORWARD;
     public CuttleRevHub hub;
     com.qualcomm.robotcore.hardware.CRServo ftcServoDevice;
 

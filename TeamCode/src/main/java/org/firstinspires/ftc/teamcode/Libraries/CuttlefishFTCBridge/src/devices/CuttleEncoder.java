@@ -8,7 +8,7 @@ public class CuttleEncoder
 {
     public CuttleRevHub hub;
     public final double encTicks;
-    private int direction = 1;
+    public int direction = 1;
     public int mPort;
     private double offsetTicks = 0;
 

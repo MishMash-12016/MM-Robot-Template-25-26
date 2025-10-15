@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.MMRobot;
 public class CuttleMotor {
     public CuttleRevHub hub;
     public int mPort;
-    int sign = 1;
+    public int sign = 1;
     double power;
     public boolean interlaced;
     double nominalVoltage = 12;
