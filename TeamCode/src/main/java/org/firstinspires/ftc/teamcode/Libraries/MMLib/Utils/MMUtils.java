@@ -2,6 +2,10 @@ package org.firstinspires.ftc.teamcode.Libraries.MMLib.Utils;
 
 import static java.util.Objects.requireNonNull;
 
+import com.pedropathing.geometry.Pose;
+import com.seattlesolvers.solverslib.geometry.Pose2d;
+import com.seattlesolvers.solverslib.geometry.Rotation2d;
+
 import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
 
@@ -146,5 +150,26 @@ public abstract class MMUtils {
         input -= numMin * modulus;
 
         return input;
+    }
+
+    /** Multiply a 3x3 matrix (row-major) by a 3x1 vector. */
+    public static double[] mat3x3MulVec(double[][] K, double[] v) {
+        double[] out = new double[3];
+        out[0] = K[0][0] * v[0] + K[0][1] * v[1] + K[0][2] * v[2];
+        out[1] = K[1][0] * v[0] + K[1][1] * v[1] + K[1][2] * v[2];
+        out[2] = K[2][0] * v[0] + K[2][1] * v[1] + K[2][2] * v[2];
+        return out;
+    }
+
+    public static Pose2d PedroPoseToSolversPose2d(Pose pedroPose){
+        return new Pose2d(pedroPose.getX(),
+                pedroPose.getY(),
+                new Rotation2d(pedroPose.getHeading()));
+    }
+
+    public static Pose Pose2dToPedro(Pose2d pose2d){
+        return new Pose(pose2d.getX(),
+                pose2d.getY(),
+                pose2d.getHeading());
     }
 }

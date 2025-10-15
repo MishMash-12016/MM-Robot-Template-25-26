@@ -24,6 +24,9 @@ public class PidBaseSubsystem extends MotorOrCrServoSubsystem {
     private CuttleEncoder encoder;
     public PIDController pidController = new PIDController(0, 0, 0);
 
+    boolean shouldWrapAngle = false;
+    double angleRange;
+
     //base
     public PidBaseSubsystem(String subsystemName) {
         super(subsystemName);
@@ -96,6 +99,17 @@ public class PidBaseSubsystem extends MotorOrCrServoSubsystem {
      */
     @AutoLogOutput
     public double getPose() {
+        if(shouldWrapAngle){
+            double angle = encoder.getPose();
+            angle = angle % angleRange;
+            if (angle < 0)
+                angle += angleRange;
+            return angle;
+        }
+        return encoder.getPose();
+    }
+
+    public double getRawPose() {
         return encoder.getPose();
     }
 
@@ -218,6 +232,13 @@ public class PidBaseSubsystem extends MotorOrCrServoSubsystem {
      */
     public PidBaseSubsystem withMaxIntegralRange(double maxIntegralRange) {
         return withIntegralRange(pidController.getMinimumIntegral(), maxIntegralRange);
+    }
+
+    public PidBaseSubsystem withAngleRange(double angleRange){
+         this.angleRange = angleRange;
+         shouldWrapAngle = true;
+         pidController.enableContinuousInput(0, angleRange);
+         return this;
     }
 
     @Override

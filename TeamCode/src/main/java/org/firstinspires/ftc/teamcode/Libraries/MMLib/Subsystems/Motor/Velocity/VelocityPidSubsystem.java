@@ -164,69 +164,71 @@ public class VelocityPidSubsystem extends PidBaseSubsystem {
 
     @Override
     public void periodic() {
-        if (MMRobot.getInstance().currentOpMode != null &&
-                MMRobot.getInstance().currentOpMode.opModeType == OpModeType.NonCompetition.DEBUG) {
+        if (MMRobot.getInstance().currentOpMode != null) {
+            try {
+                MMUtils.updateIfChanged(
+                        debugKpSupplier,
+                        pidController::getP,
+                        pidController::setP
+                );
+                MMUtils.updateIfChanged(
+                        debugKiSupplier,
+                        pidController::getI,
+                        pidController::setI
+                );
+                MMUtils.updateIfChanged(
+                        debugKdSupplier,
+                        pidController::getD,
+                        pidController::setD
+                );
+                MMUtils.updateIfChanged(
+                        debugIZoneSupplier,
+                        pidController::getIZone,
+                        pidController::setIZone
+                );
+                MMUtils.updateIfChanged(
+                        debugAccelerationToleranceSupplier,
+                        pidController::getErrorTolerance,
+                        this::withVelocityTolerance
+                );
+                MMUtils.updateIfChanged(
+                        debugVelocityToleranceSupplier,
+                        pidController::getErrorRateTolerance,
+                        this::withAccelerationTolerance
+                );
 
-            MMUtils.updateIfChanged(
-                    debugKpSupplier,
-                    pidController::getP,
-                    pidController::setP
-            );
-            MMUtils.updateIfChanged(
-                    debugKiSupplier,
-                    pidController::getI,
-                    pidController::setI
-            );
-            MMUtils.updateIfChanged(
-                    debugKdSupplier,
-                    pidController::getD,
-                    pidController::setD
-            );
-            MMUtils.updateIfChanged(
-                    debugIZoneSupplier,
-                    pidController::getIZone,
-                    pidController::setIZone
-            );
-            MMUtils.updateIfChanged(
-                    debugAccelerationToleranceSupplier,
-                    pidController::getErrorTolerance,
-                    this::withVelocityTolerance
-            );
-            MMUtils.updateIfChanged(
-                    debugVelocityToleranceSupplier,
-                    pidController::getErrorRateTolerance,
-                    this::withAccelerationTolerance
-            );
+                MMUtils.updateIfChanged(
+                        debugIntegralMinRangeSupplier,
+                        pidController::getMinimumIntegral,
+                        this::withMinIntegralRange
+                );
 
-            MMUtils.updateIfChanged(
-                    debugIntegralMinRangeSupplier,
-                    pidController::getMinimumIntegral,
-                    this::withMinIntegralRange
-            );
+                MMUtils.updateIfChanged(
+                        debugIntegralMaxRangeSupplier,
+                        pidController::getMaximumIntegral,
+                        this::withMaxIntegralRange
+                );
 
-            MMUtils.updateIfChanged(
-                    debugIntegralMaxRangeSupplier,
-                    pidController::getMaximumIntegral,
-                    this::withMaxIntegralRange
-            );
+                MMUtils.updateIfChanged(
+                        debugKsSupplier,
+                        feedforward::getKs,
+                        feedforward::setKs
+                );
 
-            MMUtils.updateIfChanged(
-                    debugKsSupplier,
-                    feedforward::getKs,
-                    feedforward::setKs
-            );
+                MMUtils.updateIfChanged(
+                        debugKvSupplier,
+                        feedforward::getKv,
+                        feedforward::setKv
+                );
 
-            MMUtils.updateIfChanged(
-                    debugKvSupplier,
-                    feedforward::getKv,
-                    feedforward::setKv
-            );
-
-            MMUtils.updateIfChanged(
-                    debugKaSupplier,
-                    feedforward::getKa,
-                    feedforward::setKa
-            );
+                MMUtils.updateIfChanged(
+                        debugKaSupplier,
+                        feedforward::getKa,
+                        feedforward::setKa
+                );
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
     }
 }

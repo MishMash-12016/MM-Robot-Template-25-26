@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.Libraries.MMLib.Subsystems.MMSubsystem;
 import org.firstinspires.ftc.teamcode.Libraries.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.Libraries.pedroPathing.Drawing;
 import org.firstinspires.ftc.teamcode.Libraries.pedroPathing.HoldPointCommand;
+import org.firstinspires.ftc.teamcode.Libraries.pedroPathing.PinpointVisionLocalizer;
 import org.firstinspires.ftc.teamcode.MMRobot;
 
 import java.util.function.BooleanSupplier;
@@ -28,11 +29,15 @@ public class MMDrivetrain extends MMSubsystem {
 
     @IgnoreConfigurable
     private static MMDrivetrain instance;
-    private static Follower follower;
+    public static Follower follower;
 
     public static synchronized MMDrivetrain getInstance() {
         if (instance == null) {
             instance = new MMDrivetrainAutoLogged();
+        }
+
+        if (follower == null){
+            follower = Constants.createFollower(MMRobot.getInstance().currentOpMode.hardwareMap);
         }
 
         if (follower == null){
@@ -109,8 +114,7 @@ public class MMDrivetrain extends MMSubsystem {
     }
 
     public void resetYaw() {
-        Pose pose = follower.getPose();
-        pose.setHeading(0);
+        Pose pose = follower.getPose().setHeading(0);
         follower.setPose(pose);
     }
 
@@ -135,12 +139,15 @@ public class MMDrivetrain extends MMSubsystem {
                 () -> mmRobot.gamepadEx1.getLeftY(),
                 () -> -mmRobot.gamepadEx1.getLeftX(),
                 () -> -mmRobot.gamepadEx1.getRightX(),
-                false, slowMode)
+                true, slowMode)
         );
     }
 
     public void setPose(Pose pose) {
         follower.setPose(pose);
+    }
+    public Pose getPose() {
+        return follower.getPose();
     }
 
     public void setPose(double x, double y, double heading) {
@@ -165,5 +172,10 @@ public class MMDrivetrain extends MMSubsystem {
 
     public void setSlowModeRatioRotation(double slowModeRatioRotation) {
         this.slowModeRatioRotation = slowModeRatioRotation;
+    }
+
+    public void addVisionMeasurement(Pose pose, double timestampSeconds){
+        ((PinpointVisionLocalizer)follower.getPoseTracker().getLocalizer())
+                .addVisionMeasurement(pose, timestampSeconds);
     }
 }

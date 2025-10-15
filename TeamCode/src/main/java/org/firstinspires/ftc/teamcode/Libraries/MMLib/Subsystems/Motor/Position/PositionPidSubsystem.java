@@ -48,6 +48,11 @@ public class PositionPidSubsystem extends PidBaseSubsystem {
             }
 
             @Override
+            public void end(boolean interrupted) {
+                setPower(0);
+            }
+
+            @Override
             public Set<Subsystem> getRequirements() {
                 // Declare that this command requires the enclosing subsystem instance
                 return Set.of(PositionPidSubsystem.this);
