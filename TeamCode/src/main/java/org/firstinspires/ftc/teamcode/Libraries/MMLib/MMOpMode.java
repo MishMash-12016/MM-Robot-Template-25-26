@@ -11,6 +11,7 @@ import com.acmerobotics.dashboard.config.variable.ConfigVariable;
 import com.acmerobotics.dashboard.config.variable.CustomVariable;
 import com.acmerobotics.dashboard.config.variable.VariableType;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
@@ -251,6 +252,7 @@ public abstract class MMOpMode extends LinearOpMode {
         CustomVariable motors = new CustomVariable();
 
         for (DcMotorSimple motor : hardwareMap.getAll(DcMotorSimple.class)) {
+            if(motor instanceof CRServo) continue;
             DcMotorEx motorEx = (DcMotorEx) motor;
             String deviceName = getDeviceName(motorEx);
             if (deviceName == null) continue;
